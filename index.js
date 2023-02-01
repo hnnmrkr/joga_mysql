@@ -1,18 +1,20 @@
-// application packages
+// Application packages
 const express = require('express')
 const app = express()
-
 const path = require('path')
 // add template engine
-const hbs = require('express-handlebars');
-// setup template engine dir and files extensions
-app.set('views', path.join(__dirname,'views'));
-app.set('views-engine', 'hbs');
+const hbs = require('express-handlebars')
+//setup template engine directory and files extensions
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'hbs')
 app.engine('hbs', hbs.engine({
     extname: 'hbs',
     defaultLayout: 'main',
-    layoutsDir: __dirname + '/views/layouts/',
+    layoutsDir: __dirname + '/views/layouts'
 }))
+
+//setup static public directory
+app.use(express.static('public'))
 
 const mysql = require('mysql')
 
