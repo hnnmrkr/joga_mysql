@@ -1,28 +1,22 @@
-const con = require('../utils/db')
+const Author = require('../models/author.model')
 
-
-const getAuthorArticles = (req, res) => {
-    let query = `select *
-                 from article
-                 where author_id = "${req.params.author_id}"`
-    let articles
-    let author
-    con.query(query, (err, result) => {
-        if (err) throw err
-        articles = result
-        query = `Select *
-                 from author
-                 where id = "${req.params.author_id}"`
-        con.query(query, (err, result) => {
-            if (err) throw err
-            author = result
-            console.log(author)
-            res.render('author', {
-                author: author,
-                articles: articles
+//show article by this slug
+const getAuthorName = (req, res) => {
+    Author.getName(req.params.author_id,(err, author, articles) => {
+        if (err) {
+            res.status(500).send({
+                message : err.message || 'An error occurred retrieving author data'
             })
-        })
+        } else {
+            console.log(author, articles)
+            res.render('author', {
+                articles: articles,
+                author: author
+            })
+        }
     })
 }
 
-module.exports = {getAuthorArticles}
+module.exports = {
+    getAuthorName
+}

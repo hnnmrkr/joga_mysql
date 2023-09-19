@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const authorController = require('../controllers/author')
+const articleController = require('../controllers/author')
 
-router.get('/:author_id', authorController.getAuthorArticles)
+router.get('/author/:author_id', articleController.getAuthorName)
 
 module.exports = router
