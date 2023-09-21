@@ -1,28 +1,29 @@
-const con = require('../utils/db');
+const con = require('../utils/db')
 
-const Article = function(article){
+const Article = function (article) {
     this.name = article.name
     this.slug = article.slug
     this.image = article.image
     this.body = article.body
     this.published = article.published
     this.author_id = article.author_id
-};
+}
 
 Article.getAll = (result) => {
-    let query = "SELECT * FROM article";
+    let query = "SELECT * FROM article"
     let articles = []
+
     con.query(query, (err, res) => {
         if (err) {
-            console.log("error: ", err);
-            result(err, null);
-            return;
+            console.log('error: ', err)
+            result(err, null)
+            return
         }
         articles = res
-        console.log("articles: ", articles);
-        result(null, articles);
+        console.log('articles: ', articles)
+        result(null, articles)
     })
-};
+}
 
 Article.getBySlug = (slug, result) => {
     let query = `SELECT *
@@ -42,26 +43,20 @@ Article.getBySlug = (slug, result) => {
             result(null, res[0])
         }
     })
-};
+}
 
 Article.createNew = (newArticle, result) => {
-    let query = `INSERT INTO article SET
-                        name = "${newArticle.name}",
-                        slug = "${newArticle.slug}",
-                        image = "${newArticle.image}",
-                        body = "${newArticle.body}",
-                        published = "${newArticle.published}",
-                        author_id = "${newArticle.author_id}",`
+    let query = `INSERT INTO article SET name = "${newArticle.name}", slug = "${newArticle.slug}", image = "${newArticle.image}", body = "${newArticle.body}", published = "${newArticle.published}", author_id = "${newArticle.author_id}"`
+
     con.query(query, (err, res) => {
         if (err) {
-            console.log("error: ", err);
-            result(err, null);
-            return;
+            console.log('error: ', err)
+            result(err, null)
+            return
         }
-        console.log("created article: ",
-            {id: res.insertId, ...newArticle});
-        result(null, {id: res.insertId, ...newArticle});
-    });
+        console.log('created article: ', {id: res.insertId, ...newArticle})
+        result(null, {id: res.insertId, ...newArticle})
+    })
 }
 
 Article.showArticle = (articleId, result) => {
@@ -93,7 +88,7 @@ Article.showArticle = (articleId, result) => {
 }
 
 Article.editArticle = (articleId, editedArticle, result) => {
-    let query = `UPDATE article SET name = "${editedArticle.name}", slug = "${editedArticle.slug}", image = "${editedArticle.image}", body = "${editedArticle.body}", author_id = "${editedArticle.author_id}" WHERE id = ${articleId}`
+    let query = `UPDATE article SET article.name = "${editedArticle.name}", slug = "${editedArticle.slug}", image = "${editedArticle.image}", article.body = "${editedArticle.body}", author_id = "${editedArticle.author_id}" WHERE id = ${articleId}`
 
     con.query(query, (err, res) => {
         if (err) {
@@ -120,4 +115,4 @@ Article.deleteArticle = (articleId, result) => {
     })
 }
 
-module.exports = Article;
+module.exports = Article
